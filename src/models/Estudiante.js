@@ -30,6 +30,10 @@ const estudianteSchema = new Schema({
         type:String,
         required:true
     },
+    carrera:{
+        type:String,
+        trim:true
+    },
     status:{
         type:Boolean,
         default:true
