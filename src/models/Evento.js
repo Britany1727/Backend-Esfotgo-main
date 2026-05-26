@@ -16,7 +16,15 @@ const eventoSchema = new Schema({
         type:String,
         required:false,
         trim:true
+<<<<<<< HEAD
     },          
+=======
+    },
+    coordenadas: {
+        lat: { type: Number },
+        lng: { type: Number }
+    },         
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
     fecha:{
         type:Date,
         required:true

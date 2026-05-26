@@ -6,6 +6,7 @@ import Evento from "../models/Evento.js"
 import Oficina from "../models/Oficinas.js"
 import Aula from "../models/Aulas.js"
 
+<<<<<<< HEAD
 const registroEstudiante = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -32,12 +33,29 @@ const registroEstudiante = async (req, res) => {
 
         res.status(200).json({ msg: "Tu cuenta ha sido activada y creada exitosamente" });
 
+=======
+const registro = async (req, res) => {
+    try {
+        const { email, password } = req.body; 
+        if (Object.values(req.body).includes("")) return res.status(400).json({ msg: "Lo sentimos, debes llenar todos los campos" });
+        const verificarEmailBDD = await Estudiante.findOne({ email });
+        if (verificarEmailBDD) return res.status(400).json({ msg: "Lo sentimos, el email ya se encuentra registrado" });
+        const nuevoEstudiante = new Estudiante(req.body);
+        nuevoEstudiante.password = await nuevoEstudiante.encryptPassword(password);
+        const token = nuevoEstudiante.createToken();
+        await nuevoEstudiante.save()
+        res.status(200).json({ msg: "Tu cuenta ha sido creada exitosamente" });
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
     } catch (error) {
         res.status(500).json({ msg: `❌ Error en el servidor - ${error.message}` });
     }
 }
 
+<<<<<<< HEAD
 const recuperarPasswordEstudiante = async (req, res) => {
+=======
+const recuperarPassword = async (req, res) => {
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
     try {
         const { email } = req.body
         if (!email) return res.status(400).json({ msg: "Debes ingresar un correo electrónico" })
@@ -53,7 +71,11 @@ const recuperarPasswordEstudiante = async (req, res) => {
     }
 }
 
+<<<<<<< HEAD
 const comprobarTokenPasswordEstudiante = async (req, res) => {
+=======
+const comprobarTokenPassword = async (req, res) => {
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
     try {
         const { token } = req.params
         const estudianteBDD = await Estudiante.findOne({ token })
@@ -64,7 +86,11 @@ const comprobarTokenPasswordEstudiante = async (req, res) => {
     }
 }
 
+<<<<<<< HEAD
 const crearNuevoPasswordEstudiante = async (req, res) => {
+=======
+const crearNuevoPassword = async (req, res) => {
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
     try {
         const { password, confirmpassword } = req.body
         const { token } = req.params
@@ -81,7 +107,11 @@ const crearNuevoPasswordEstudiante = async (req, res) => {
     }
 }
 
+<<<<<<< HEAD
 const loginEstudiante = async (req, res) => {
+=======
+const login = async (req, res) => {
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
     try {
         const { email, password } = req.body
         if (Object.values(req.body).includes("")) return res.status(404).json({ msg: "Debes llenar todos los campos" })
@@ -106,14 +136,22 @@ const loginEstudiante = async (req, res) => {
     }
 }
 
+<<<<<<< HEAD
 const perfilEstudiante = (req, res) => {
+=======
+const perfil = (req, res) => {
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
     const estudiante = req.userHeader || req.docenteHeader || req.adminHeader;
     if (!estudiante) return res.status(404).json({ msg: "No se pudo obtener la información del perfil" });
     const { token, confirmEmail, createdAt, updatedAt, __v, password, ...datosPerfil } = estudiante;
     res.status(200).json(datosPerfil);
 }
 
+<<<<<<< HEAD
 const actualizarPerfilEstudiante = async (req, res) => {
+=======
+const actualizarPerfil = async (req, res) => {
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
     try {
         const { id } = req.params;
         const { nombre, apellido, direccion, telefono, email } = req.body; 
@@ -147,7 +185,11 @@ const actualizarPerfilEstudiante = async (req, res) => {
     }
 }
 
+<<<<<<< HEAD
 const actualizarPasswordEstudiante = async (req, res) => {
+=======
+const actualizarPassword = async (req, res) => {
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
     try {
         const { passwordactual, passwordnuevo } = req.body;
         const estudianteAutenticado = req.estudianteHeader || req.docenteHeader || req.adminHeader;
@@ -163,6 +205,7 @@ const actualizarPasswordEstudiante = async (req, res) => {
 }
 
 export {
+<<<<<<< HEAD
     registroEstudiante,
     recuperarPasswordEstudiante,
     comprobarTokenPasswordEstudiante,
@@ -171,4 +214,14 @@ export {
     perfilEstudiante,
     actualizarPerfilEstudiante,
     actualizarPasswordEstudiante,
+=======
+    registro,
+    recuperarPassword,
+    comprobarTokenPassword,
+    crearNuevoPassword,
+    login,
+    perfil,
+    actualizarPerfil,
+    actualizarPassword,
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
 };

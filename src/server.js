@@ -8,7 +8,12 @@ import cloudinary from 'cloudinary'
 import fileUpload from "express-fileupload"
 import connection from './database.js' 
 import session from 'express-session' 
+<<<<<<< HEAD
 import router from './routers/Estudiante_routes.js';
+=======
+import router from './routers/User_routes.js';
+import routerMapa from './routers/Mapa_routes.js';
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
 
 // Inicializaciones
 const app = express()
@@ -26,10 +31,14 @@ cloudinary.config({
 app.use(express.json()) // Permite leer JSON en el body
 app.use(express.urlencoded({ extended: true }))
 // 1. CORS debe permitir credenciales para las cookies de sesión
+<<<<<<< HEAD
 app.use(cors({
     origin: "http://localhost:5173", // URL de tu Vite/React
     credentials: true
 }));
+=======
+app.use(cors({ origin: true, credentials: true }));
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
 
 app.use(express.json())
 
@@ -50,6 +59,10 @@ app.get('/', (req, res) => res.send("Server on"))
 app.use('/api', router)
 app.use('/api', routerAdmins)
 app.use('/api', routerDocentes)
+<<<<<<< HEAD
+=======
+app.use('/api', routerMapa)
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
 
 // Manejo de 404
 app.use((req, res) => res.status(404).send("Endpoint no encontrado - 404"))

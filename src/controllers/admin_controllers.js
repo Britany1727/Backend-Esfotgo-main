@@ -3,10 +3,16 @@ import { sendMailToRecoveryPassword } from "../helpers/sendMail.js"
 import { crearTokenJWT } from "../middlewares/JWT.js"
 import mongoose from "mongoose"
 import Evento from "../models/Evento.js"
+<<<<<<< HEAD
 import { subirImagenEvento, subirBase64Evento } from "../helpers/uploadCloudinary.js"
 import Oficina from "../models/Oficinas.js"
 import Aula from "../models/Aulas.js"
 import Estudiante from "../models/Estudiante.js"
+=======
+import { subirImagenEvento, subirBase64Evento, subirImagenOficina, subirBase64Oficina, subirImagenAula, subirBase64Aula } from "../helpers/uploadCloudinary.js"
+import Oficina from "../models/Oficinas.js"
+import Aula from "../models/Aulas.js"
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
 import Docente from "../models/Docente.js"
 
 const registroAdmin = async (req, res) => {
@@ -181,9 +187,15 @@ const actualizarPasswordAdmin = async (req,res)=>{
 const crearEvento = async (req,res)=>{
 
     try {
+<<<<<<< HEAD
         const {nombre,descripcion,fecha,hora,encargado,ubicacion,imagen} = req.body
         if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
         const nuevoEvento = new Evento(req.body)
+=======
+        const {nombre,informacion,fecha,hora,organizador,ubicacion,coordenadas,imagen} = req.body
+        if (!nombre || !informacion || !fecha || !hora || !organizador) return res.status(400).json({msg:"Lo sentimos, debes llenar nombre, informacion, fecha, hora y organizador"})
+        const nuevoEvento = new Evento({nombre,informacion,fecha,hora,organizador,ubicacion,coordenadas})
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
 
         if (req.files?.subirImagenEvento) {
             const { secure_url, public_id } = await subirImagenEvento(req.files.subirImagenEvento.tempFilePath)
@@ -206,16 +218,29 @@ const actualizarEvento = async (req,res)=>{
 
     try {
         const {id} = req.params
+<<<<<<< HEAD
         const {nombre,descripcion,fecha,hora,encargado,ubicacion,imagen} = req.body
+=======
+        const {nombre,informacion,fecha,hora,organizador,ubicacion,coordenadas,imagen} = req.body
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
         if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
         const eventoBDD = await Evento.findById(id)
         if(!eventoBDD) return res.status(404).json({msg:"El evento no existe"})
         eventoBDD.nombre = nombre || eventoBDD.nombre
+<<<<<<< HEAD
         eventoBDD.descripcion = descripcion || eventoBDD.descripcion
         eventoBDD.fecha = fecha || eventoBDD.fecha
         eventoBDD.hora = hora || eventoBDD.hora
         eventoBDD.encargado = encargado || eventoBDD.encargado
         eventoBDD.ubicacion = ubicacion || eventoBDD.ubicacion
+=======
+        eventoBDD.informacion = informacion || eventoBDD.informacion
+        eventoBDD.fecha = fecha || eventoBDD.fecha
+        eventoBDD.hora = hora || eventoBDD.hora
+        eventoBDD.organizador = organizador || eventoBDD.organizador
+        eventoBDD.ubicacion = ubicacion || eventoBDD.ubicacion
+        eventoBDD.coordenadas = coordenadas || eventoBDD.coordenadas
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
 
         if (req.files?.subirImagenEvento) {
             const { secure_url, public_id } = await subirImagenEvento(req.files.subirImagenEvento.tempFilePath)
@@ -271,10 +296,16 @@ const verEvento = async (req,res)=>{
 
 }
 
+<<<<<<< HEAD
 //------------------------------------------------------------------DOCENTES----------------------------------------
 const listarDocentes = async (req,res)=>{
     try {
         const docentesBDD = await Docente.find().sort({createdAt:-1})
+=======
+const listarDocentes = async (req,res)=>{
+    try {
+        const docentesBDD = await Docente.find().select("-password -token -status -__v -createdAt -updatedAt").sort({createdAt:-1})
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
         res.status(200).json(docentesBDD)
     } catch (error) {
         res.status(500).json({ msg: `❌ Error en el servidor - ${error}` })
@@ -304,12 +335,33 @@ const eliminarDocente = async (req,res)=>{
         res.status(500).json({ msg: `❌ Error en el servidor - ${error}` })
     }
 }
+<<<<<<< HEAD
 //------------------------------------------------------------------OFICINAS----------------------------------------
 
 const crearOficinas = async (req,res)=>{
     try {
         const {nombre,ubicacion,encargado,telefono} = req.body
         if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
+=======
+
+const crearOficinas = async (req,res)=>{
+    try {
+        const {numero,ubicacion,encargado,telefono,edificio,piso,coordenadas} = req.body
+        if (!numero || !ubicacion || !edificio) return res.status(400).json({msg:"Lo sentimos, debes llenar numero, ubicacion y edificio"})
+        const nuevaOficina = new Oficina({numero,ubicacion,encargado,telefono,edificio,piso,coordenadas})
+
+        if (req.files?.subirImagenOficina) {
+            const { secure_url } = await subirImagenOficina(req.files.subirImagenOficina.tempFilePath)
+            nuevaOficina.imagen = secure_url
+        }
+        if (req.body.subirBase64Oficina) {
+            const secure_url = await subirBase64Oficina(req.body.subirBase64Oficina)
+            nuevaOficina.imagen = secure_url
+        }
+
+        await nuevaOficina.save()
+        res.status(200).json({msg:"Oficina creada correctamente", oficina: nuevaOficina})
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
         }   
     catch (error) {
         res.status(500).json({ msg: `❌ Error en el servidor - ${error}` })
@@ -342,6 +394,7 @@ const verOficina = async (req,res)=>{
 const actualizarOficina = async (req,res)=>{
     try {
         const {id} = req.params 
+<<<<<<< HEAD
         const {nombre,ubicacion,encargado,telefono} = req.body
         if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
         const oficinaBDD = await Oficina.findById(id)
@@ -350,6 +403,29 @@ const actualizarOficina = async (req,res)=>{
         oficinaBDD.ubicacion = ubicacion || oficinaBDD.ubicacion
         oficinaBDD.encargado = encargado || oficinaBDD.encargado
         oficinaBDD.telefono = telefono || oficinaBDD.telefono
+=======
+        const {numero,ubicacion,encargado,telefono,edificio,piso,coordenadas} = req.body
+        if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
+        const oficinaBDD = await Oficina.findById(id)
+        if(!oficinaBDD) return res.status(404).json({msg:"La oficina no existe"})
+        oficinaBDD.numero = numero || oficinaBDD.numero
+        oficinaBDD.ubicacion = ubicacion || oficinaBDD.ubicacion
+        oficinaBDD.encargado = encargado || oficinaBDD.encargado
+        oficinaBDD.telefono = telefono || oficinaBDD.telefono
+        oficinaBDD.edificio = edificio || oficinaBDD.edificio
+        oficinaBDD.piso = piso || oficinaBDD.piso
+        oficinaBDD.coordenadas = coordenadas || oficinaBDD.coordenadas
+
+        if (req.files?.subirImagenOficina) {
+            const { secure_url } = await subirImagenOficina(req.files.subirImagenOficina.tempFilePath)
+            oficinaBDD.imagen = secure_url
+        }
+        if (req.body.subirBase64Oficina) {
+            const secure_url = await subirBase64Oficina(req.body.subirBase64Oficina)
+            oficinaBDD.imagen = secure_url
+        }
+
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
         await oficinaBDD.save()
         res.status(200).json({msg:"Oficina actualizada correctamente"})
     }   
@@ -371,12 +447,32 @@ const eliminarOficina = async (req,res)=>{
     }
 }
 
+<<<<<<< HEAD
 
 //------------------------------------------------------------------AULAS----------------------------------------
 const crearAulas = async (req,res)=>{
     try {
         const {nombre,ubicacion,capacidad} = req.body
         if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
+=======
+const crearAulas = async (req,res)=>{
+    try {
+        const {numero,ubicacion,tipo,piso,coordenadas,edificio} = req.body
+        if (!numero || !ubicacion || !tipo || !edificio) return res.status(400).json({msg:"Lo sentimos, debes llenar numero, ubicacion, tipo y edificio"})
+        const nuevaAula = new Aula({numero,ubicacion,tipo,piso,coordenadas,edificio})
+
+        if (req.files?.subirImagenAula) {
+            const { secure_url } = await subirImagenAula(req.files.subirImagenAula.tempFilePath)
+            nuevaAula.imagen = secure_url
+        }
+        if (req.body.subirBase64Aula) {
+            const secure_url = await subirBase64Aula(req.body.subirBase64Aula)
+            nuevaAula.imagen = secure_url
+        }
+
+        await nuevaAula.save()
+        res.status(200).json({msg:"Aula creada correctamente", aula: nuevaAula})
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
         }
     catch (error) {
         res.status(500).json({ msg: `❌ Error en el servidor - ${error}` })
@@ -386,6 +482,7 @@ const crearAulas = async (req,res)=>{
 const actualizarAula = async (req,res)=>{
     try {
         const {id} = req.params
+<<<<<<< HEAD
         const {nombre,ubicacion,capacidad} = req.body
         if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
         const aulaBDD = await Aula.findById(id)
@@ -393,6 +490,28 @@ const actualizarAula = async (req,res)=>{
         aulaBDD.nombre = nombre || aulaBDD.nombre
         aulaBDD.ubicacion = ubicacion || aulaBDD.ubicacion
         aulaBDD.capacidad = capacidad || aulaBDD.capacidad
+=======
+        const {numero,ubicacion,tipo,piso,coordenadas,edificio} = req.body
+        if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
+        const aulaBDD = await Aula.findById(id)
+        if(!aulaBDD) return res.status(404).json({msg:"El aula no existe"})
+        aulaBDD.numero = numero || aulaBDD.numero
+        aulaBDD.ubicacion = ubicacion || aulaBDD.ubicacion
+        aulaBDD.tipo = tipo || aulaBDD.tipo
+        aulaBDD.piso = piso || aulaBDD.piso
+        aulaBDD.coordenadas = coordenadas || aulaBDD.coordenadas
+        aulaBDD.edificio = edificio || aulaBDD.edificio
+
+        if (req.files?.subirImagenAula) {
+            const { secure_url } = await subirImagenAula(req.files.subirImagenAula.tempFilePath)
+            aulaBDD.imagen = secure_url
+        }
+        if (req.body.subirBase64Aula) {
+            const secure_url = await subirBase64Aula(req.body.subirBase64Aula)
+            aulaBDD.imagen = secure_url
+        }
+
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
         await aulaBDD.save()
         res.status(200).json({msg:"Aula actualizada correctamente"})
     }
@@ -403,7 +522,11 @@ const actualizarAula = async (req,res)=>{
 
 const listarAulas = async (req,res)=>{
     try {
+<<<<<<< HEAD
         const aulasBDD = await Aula.find().sort({createdAt:-1})
+=======
+        const aulasBDD = await Aula.find().populate('edificio', 'nombre codigo').sort({createdAt:-1})
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
         res.status(200).json(aulasBDD)
     } catch (error) {
         res.status(500).json({ msg: `❌ Error en el servidor - ${error}` })
@@ -413,7 +536,11 @@ const listarAulas = async (req,res)=>{
 const verAula = async (req,res)=>{
     try {
         const {id} = req.params
+<<<<<<< HEAD
         const aulaBDD = await Aula.findById(id)
+=======
+        const aulaBDD = await Aula.findById(id).populate('edificio', 'nombre codigo')
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
         if(!aulaBDD) return res.status(404).json({msg:"El aula no existe"})
         res.status(200).json(aulaBDD)
     }
@@ -435,6 +562,7 @@ const eliminarAula = async (req,res)=>{
     }
 }
 
+<<<<<<< HEAD
 //------------------------------------------------------------------ESTUDIANTES----------------------------------------
 // listar estudiantes
 const listarEstudiantes    = async (req,res)=>{
@@ -471,6 +599,10 @@ const eliminarEstudiante = async (req,res)=>{
         res.status(500).json({ msg: `❌ Error en el servidor - ${error}` })
     }
 }
+=======
+
+
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
 
 
 export {registroAdmin,
@@ -498,8 +630,12 @@ export {registroAdmin,
     actualizarAula,
     listarAulas,
     verAula,
+<<<<<<< HEAD
     eliminarAula,
     listarEstudiantes,
     verEstudiante,
     eliminarEstudiante,
+=======
+    eliminarAula
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
 }

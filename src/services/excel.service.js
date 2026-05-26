@@ -29,7 +29,11 @@ const processExcel = async (filePath, tipo) => {
   return -1;
 })();
   const Modelo = tipo === 'docente' ? Docente : Estudiante;
+<<<<<<< HEAD
   const defaultPassword = tipo === 'docente' ? '' : '';
+=======
+  const defaultPassword = tipo === 'docente' ? 'Docente123*' : 'Estudiante123*';
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
   const hashedPassword = await bcrypt.hash(defaultPassword, 10);
 
   const errores = [];

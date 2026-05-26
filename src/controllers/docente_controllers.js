@@ -15,6 +15,7 @@ const registroDocente = async (req,res)=>{
         if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
 
         const verificarEmailBDD = await Docente.findOne({email})
+<<<<<<< HEAD
 
         // ❌ Si NO existe en la base de datos, no tiene autorización
         if (!docenteBDD) {
@@ -29,6 +30,8 @@ const registroDocente = async (req,res)=>{
             return res.status(400).json({ msg: "Esta cuenta ya se encuentra activa" });
         }
         
+=======
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
         if(verificarEmailBDD) return res.status(400).json({msg:"Lo sentimos, el email ya se encuentra registrado"})
         const nuevoDocente = new Docente(req.body)
 
@@ -170,12 +173,20 @@ const actualizarPerfilDocente = async (req, res) => {
 
         if (req.files?.subirImagenDocente) {
             const { secure_url, public_id } = await subirImagenDocente(req.files.subirImagenDocente.tempFilePath)
+<<<<<<< HEAD
             docenteBDD.imagen = secure_url
+=======
+            nuevoDocente.imagen = secure_url
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
         }
 
         if (req.body.subirBase64Docente) {
             const secure_url = await subirBase64Docente(req.body.subirBase64Docente)
+<<<<<<< HEAD
             docenteBDD.imagen = secure_url
+=======
+            nuevoDocente.imagen = secure_url
+>>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
         }
 
         await docenteBDD.save();
