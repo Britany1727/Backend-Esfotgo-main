@@ -30,13 +30,9 @@ const estudianteSchema = new Schema({
         type:String,
         required:true
     },
-<<<<<<< HEAD
-    carrera:{
-        type:String,
-        trim:true
-    },
-=======
->>>>>>> 080ee708b678ade69079450e2004ace9a6cb0dd7
+
+    
+
     status:{
         type:Boolean,
         default:true
